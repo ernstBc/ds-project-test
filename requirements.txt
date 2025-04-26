@@ -1,0 +1,12 @@
+pandas
+mlflow
+notebook
+numpy
+matplotlib
+python-box
+scikit-learn
+pyYAML
+tqdm
+ensure
+joblib
+types-pyYAML
