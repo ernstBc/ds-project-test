@@ -3,7 +3,7 @@ artifacts_dir: artifact/
 data_ingestion:
   directory: artifact/data_ingestion
   source_url:
-    https://github.com/MainakRepositor/Datasets/blob/master/Titanic.csv
+    https://raw.githubusercontent.com/MainakRepositor/Datasets/refs/heads/master/Titanic.csv
   local_data_file: artifact/data_ingestion/Titanic.csv
   raw_data_path: artifact/data_ingestion/raw_data
   train_data_path: artifact/data_ingestion/train_data
