@@ -28,6 +28,6 @@ class DataIngestion:
 
     def setup_data(self):
         # move the data to the raw data path
-        if not self.config.local_data_file in os.listdir(self.config.raw_data_path):
+        if not os.path.exists(self.config.local_data_file):
             shutil.move(self.config.local_data_file, self.config.raw_data_path)
             logger.info(f'Data moved to {self.config.raw_data_path}')

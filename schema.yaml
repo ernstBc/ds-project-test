@@ -1,3 +1,39 @@
-s:
-  s
-  
+COLUMNS:
+  PassengerId:
+    type: int64
+    description: Unique identifier for each passenger.
+  Pclass:
+    type: int64
+    description: Ticket class (1 = 1st, 2 = 2nd, 3 = 3rd).
+  Name:
+    type: string
+    description: Name of the passenger.
+  Sex:
+    type: string
+    description: Gender of the passenger
+  Age:
+    type: float64
+    description: Age of the passenger in years.
+  SibSp:
+    type: int64
+    description: Number of siblings or spouses aboard the Titanic.
+  Parch:
+    type: int64
+    description: Number of parents or children aboard the Titanic.
+  Ticket:
+    type: string
+    description: Ticket number.
+  Fare:
+    type: float64
+    description: Passenger fare.
+  Cabin:
+    type: string
+    description: Cabin number.
+  Embarked:
+    type: string
+    description: Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton).
+
+TARGET:
+  Survived:
+    type: int64
+    description: Survival status (0 = No, 1 = Yes).
