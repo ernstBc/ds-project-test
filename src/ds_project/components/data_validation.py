@@ -6,12 +6,19 @@ from src.ds_project.entity.entity_config import DataValidationConfig
 import datetime
 
 class DataValidation:
+    '''
+    Component to validate the data against the schema
+    Arguments:
+        config: DataValidationConfig object
+    '''
     def __init__(self, config: DataValidationConfig):
         self.config = config
     
     def validate_data_schema(self) -> bool: 
         """
         Validate the data against the schema
+        Returns:
+            bool: True if validation is failure, False otherwise
         """
         status=True
         try:

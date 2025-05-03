@@ -13,4 +13,11 @@ data_validation:
   directory: artifact/data_validation
   status: artifact/data_validation/status.txt
   local_csv_file: artifact/data_ingestion/raw_data/Titanic.csv
-  
+
+data_transformation:
+  directory: artifact/data_transformation
+  transformation_artifacts: artifact/data_transformation/artifacts
+  tranformation_info: artifact/data_transformation/transformation_info.txt
+  training_csv_dir: artifact/data_ingestion/train_data/train.csv
+  testing_csv_dir: artifact/data_ingestion/test_data/test.csv
+  preprocessor_file_path: artifact/data_transformation/artifacts/preprocessing.pkl

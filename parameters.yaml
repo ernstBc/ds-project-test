@@ -1,3 +1,13 @@
-k:
-  s
-  
+transform_data:
+  RANDOM_SEED: 86
+  TEST_SIZE: 0.2
+  DROPPED_COLUMNS:
+    - PassengerId
+    - Name
+    - Ticket
+    - Cabin
+
+training:
+  TARGET_COLUMN: Survived
+  TEST_SIZE: 0.2
+  RANDOM_SEED: 42

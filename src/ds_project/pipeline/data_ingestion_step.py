@@ -25,5 +25,5 @@ if __name__ == "__main__":
         logger.info("Data ingestion completed successfully.")
 
     except Exception as e:
-        logger.error(f"An error occurred: {e}")
+        logger.error(f"An error occurred in data ingestion component: {e}")
         raise e

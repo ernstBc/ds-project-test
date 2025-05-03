@@ -21,3 +21,14 @@ class DataValidationConfig:
     data_path: Path
     STATUS_FILE: str
     schema_file: Dict
+
+
+@dataclass
+class DataTransformationConfig:
+    """Data Transformation Configuration"""
+    data_dir : Path
+    training_csv_dir : Path
+    testing_csv_dir : Path
+    preprocessor_dir : Path
+    params: Dict
+    

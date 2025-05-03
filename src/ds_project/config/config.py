@@ -1,12 +1,12 @@
-
-from src.ds_project.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH, SCHEMA_FILE_PATH
 from src.ds_project.utils.utils import read_yaml, create_directories
 from src.ds_project import logger
-from urllib.request import urlretrieve
 from pathlib import Path
-from src.ds_project.entity.entity_config import DataIngestionConfig, DataValidationConfig
-import shutil
-
+from src.ds_project.entity.entity_config import (DataIngestionConfig, 
+                                                 DataValidationConfig, 
+                                                 DataTransformationConfig)
+from src.ds_project.constants import (CONFIG_FILE_PATH, 
+                                      PARAMS_FILE_PATH, 
+                                      SCHEMA_FILE_PATH)
 
 class ConfigurationManager:
     def __init__(self, 
@@ -62,3 +62,25 @@ class ValidationConfigurationManager:
         
 
         return data_validation_config
+    
+
+
+
+class DataTransformationManager:
+    def __init__(self, config_path: str = CONFIG_FILE_PATH, params_path: str = PARAMS_FILE_PATH) -> DataTransformationConfig:
+        self.config = read_yaml(config_path)
+        self.params = read_yaml(params_path)
+
+
+    def create_data_transformation_config(self) -> DataTransformationConfig:
+        config = DataTransformationConfig(
+            data_dir=self.config['data_ingestion']['local_data_file'],
+            training_csv_dir=self.config['data_transformation']['training_csv_dir'],
+            testing_csv_dir=self.config['data_transformation']['testing_csv_dir'],
+            preprocessor_dir=self.config['data_transformation']['preprocessor_file_path'],
+            params=self.params['transform_data']
+        )
+        create_directories([self.config['data_transformation']['directory']])
+        create_directories([self.config['data_transformation']['transformation_artifacts']])
+        
+        return config

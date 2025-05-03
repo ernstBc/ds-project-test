@@ -8,6 +8,8 @@ from src.ds_project import logger
 from typing import Any
 from pathlib import Path
 from box.exceptions import BoxValueError
+import pickle
+
 
 @ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
@@ -77,21 +79,27 @@ def load_json(path: Path) -> dict:
         return data
     
 
-@ensure_annotations
-def save_binary_data(path: Path, data: Any) -> None:
+
+def save_binary_data(path: Path, data: Any, as_pickle: bool) -> None:
     """
     Saves data as a binary file using joblib.
     
     Args:
         path (str): Path to save the binary file.
         data (Any): Data to save as binary.
+        as_pickle(bool): Save as a pickle file
     """
-    joblib.dump(data, path)
-    logger.info(f"Binary file {path} saved successfully.")
+    if as_pickle:
+        with open(path, 'wb') as file:
+            pickle.dump(data, file, protocol=pickle.HIGHEST_PROTOCOL)
+            logger.info(f"Binary file {path} saved successfully.")
+    else:
+        joblib.dump(data, path)
+        logger.info(f"Binary file {path} saved successfully.")
 
 
 @ensure_annotations
-def load_binary_data(path: Path) -> Any:
+def load_binary_data(path: Path, is_pickle=True) -> Any:
     """
     Loads a binary file and returns its contents.
     
@@ -101,6 +109,12 @@ def load_binary_data(path: Path) -> Any:
     Returns:
         Any: Contents of the binary file.
     """
-    data = joblib.load(path)
-    logger.info(f"Binary file {path} loaded successfully.")
+    if is_pickle:
+        with open(path, 'rb') as file:
+            data = pickle.load(file)
+            logger.info(f"Binary file {path} loaded successfully.")
+    # If not pickle, use joblib
+    else:
+        data = joblib.load(path)
+        logger.info(f"Binary file {path} loaded successfully.")
     return data
