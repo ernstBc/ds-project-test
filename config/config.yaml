@@ -21,3 +21,19 @@ data_transformation:
   training_csv_dir: artifact/data_ingestion/train_data/train.csv
   testing_csv_dir: artifact/data_ingestion/test_data/test.csv
   preprocessor_file_path: artifact/data_transformation/artifacts/preprocessing.pkl
+
+model_trainer:
+  directory: artifact/model_trainer
+
+  model_path: artifact/model_trainer/model.pkl
+  model_report: artifact/model_trainer/model_report.json
+  model_registry: artifact/model_trainer/model_registry.json
+
+  training_csv_dir: artifact/data_ingestion/train_data/train.csv
+  testing_csv_dir: artifact/data_ingestion/test_data/test.csv
+
+model_validator:
+  directory: artifact/model_validator
+  best_model_path: artifact/model_validator/best_model
+  best_model_artifacts_path: artifact/model_validator/best_model/artifacts
+  model_registry: artifact/model_validator/registry.txt

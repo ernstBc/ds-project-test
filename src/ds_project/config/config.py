@@ -1,12 +1,17 @@
+import os
 from src.ds_project.utils.utils import read_yaml, create_directories
 from src.ds_project import logger
 from pathlib import Path
 from src.ds_project.entity.entity_config import (DataIngestionConfig, 
                                                  DataValidationConfig, 
-                                                 DataTransformationConfig)
+                                                 DataTransformationConfig,
+                                                 ModelTrainingConfig,
+                                                 ModelValidatorConfig)
 from src.ds_project.constants import (CONFIG_FILE_PATH, 
                                       PARAMS_FILE_PATH, 
-                                      SCHEMA_FILE_PATH)
+                                      SCHEMA_FILE_PATH,
+                                      DEFAULT_MODEL)
+from datetime import datetime
 
 class ConfigurationManager:
     def __init__(self, 
@@ -59,11 +64,9 @@ class ValidationConfigurationManager:
             STATUS_FILE=self.config['data_validation']['status'],
             schema_file=self.schema
         )
-        
 
         return data_validation_config
     
-
 
 
 class DataTransformationManager:
@@ -84,3 +87,58 @@ class DataTransformationManager:
         create_directories([self.config['data_transformation']['transformation_artifacts']])
         
         return config
+    
+
+class ModelTrainingManager:
+    def __init__(self, 
+                 config_path: str=CONFIG_FILE_PATH, 
+                 params_file_path: str = PARAMS_FILE_PATH,
+                 model_type: str = DEFAULT_MODEL):
+
+        self.config = read_yaml(config_path)
+        self.params = read_yaml(params_file_path)
+        self.model_type = model_type
+
+    def get_model_training_config(self) -> ModelTrainingConfig:
+
+        config= ModelTrainingConfig(
+            model_name=datetime.now().strftime("%Y-%m-%d-%H-%M-%S"),
+            model_type=self.model_type,
+            model_dir=Path(self.config['model_trainer']['directory']),
+            training_data_path=Path(self.config['model_trainer']['training_csv_dir']),
+            test_data_path=Path(self.config['model_trainer']['testing_csv_dir']),
+            params=self.params
+        )
+
+        create_directories([self.config['model_trainer']['directory']])
+
+        return config
+    
+
+class ModelValidatorManager:
+    def __init__(self,
+                 config_path: str = CONFIG_FILE_PATH,
+                 params_path: str = PARAMS_FILE_PATH):
+        
+        self.config= read_yaml(config_path)
+        self.params = read_yaml(params_path)
+
+        create_directories([self.config.model_validator['directory'], 
+                            self.config.model_validator['best_model_path'],
+                            self.config.model_validator['best_model_artifacts_path']])
+        
+    def get_model_validator_config(self, model_name:str, model_type:str):
+        model_path = os.path.join(self.config.model_trainer['directory'], model_name)
+        config=ModelValidatorConfig(
+            model_path=Path(model_path),
+            model_name=model_name,
+            model_type=model_type,
+            test_data_path=self.config.model_trainer['testing_csv_dir'],
+            best_model_path=self.config.model_validator['best_model_path'],
+            best_model_artifacts=self.config.model_validator['best_model_artifacts_path'],
+            model_registry_path=self.config.model_validator['model_registry'],
+            params=self.params
+        )
+
+        return config
+    

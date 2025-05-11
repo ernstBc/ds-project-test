@@ -26,6 +26,7 @@ def save_data(data: pd.DataFrame, file_path: str) -> None:
         logger.error(f"Error saving data: {e}")
         raise e
 
+
 def feature_selection(data: pd.DataFrame, features_to_drop: List[str]) -> pd.DataFrame:
     """
     Select relevant features from the dataset dropping irrelevant features.
@@ -49,8 +50,6 @@ def create_prepocessor(data: pd.DataFrame):
         data(DataFrame): A pandas DataFrame
     Returns:
         preprocessor(ColumnTranform): A sklearn.ColumnTransform object
-
-
     """
     numeric_features = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
     categorical_features = data.select_dtypes(include=['object']).columns.tolist()
@@ -61,12 +60,10 @@ def create_prepocessor(data: pd.DataFrame):
         ('scaler', StandardScaler())
     ])
 
-
     categorical_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='most_frequent')),
         ('onehot', OneHotEncoder(handle_unknown='ignore'))
     ])
-
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -106,6 +103,9 @@ class DataTransformation:
             training_data, testing_data = train_test_split(data, 
                                                            test_size=self.config.params['TEST_SIZE'],
                                                            random_state=self.config.params['RANDOM_SEED'])
+            logger.info("Data split into training and testing sets.")
+            logger.info(f"Training data shape: {training_data.shape}")
+            logger.info(f"Testing data shape: {testing_data.shape}")
 
             # Create preprocessor
             preprocessor = create_prepocessor(training_data.drop(columns=['Survived']))

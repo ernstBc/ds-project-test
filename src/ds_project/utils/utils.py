@@ -49,12 +49,12 @@ def create_directories(path_to_directories: list, verbose: bool = True) -> None:
         
 
 @ensure_annotations
-def save_json(path: Path, data: dict) -> None:
+def save_json(path: Path, data: dict):
     """
     Saves a dictionary as a JSON file.
     
     Args:
-        path (str): Path to save the JSON file.
+        path (Path): Path to save the JSON file.
         data (dict): Dictionary to save as JSON.
     """
     with open(path, 'w') as json_file:
@@ -99,7 +99,7 @@ def save_binary_data(path: Path, data: Any, as_pickle: bool) -> None:
 
 
 @ensure_annotations
-def load_binary_data(path: Path, is_pickle=True) -> Any:
+def load_binary_data(path: Path, is_pickle=True):
     """
     Loads a binary file and returns its contents.
     

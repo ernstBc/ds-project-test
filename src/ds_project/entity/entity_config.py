@@ -32,3 +32,23 @@ class DataTransformationConfig:
     preprocessor_dir : Path
     params: Dict
     
+
+@dataclass
+class ModelTrainingConfig:
+    model_name: str
+    model_type: str
+    model_dir: Path
+    training_data_path: Path
+    test_data_path: Path
+    params: dict
+
+@dataclass
+class ModelValidatorConfig:
+    model_path: Path
+    model_name:str
+    model_type:str
+    test_data_path: Path
+    best_model_path: Path
+    best_model_artifacts: Path
+    model_registry_path: Path
+    params: dict
