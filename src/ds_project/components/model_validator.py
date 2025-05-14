@@ -53,13 +53,18 @@ class ModelValidator:
                            params=self.config.params.training.MODELS[self.config.model_type])
 
         else:
+            # load old best model
             old_model=load_binary_data(old_model_path)
+
+            # make prediction in both new and old models
             old_preds=old_model.predict(x_test)
-            
             new_preds=model.predict(x_test)
 
+            # calculate metrics
             f1_old = f1_score(y_test, old_preds)
             f1_new = f1_score(y_test, new_preds)
+            print('-----------------current f1--------------' +str(f1_new))
+            print('-----------------last f1--------------' +str(f1_new))
 
             if (f1_new) > (f1_old + self.threshold):
 
@@ -69,7 +74,7 @@ class ModelValidator:
                                 data=model,
                                 as_pickle=True)
                 # log metrics and model
-                metrics=save_metrics_image(y_test, preds, self.config.best_model_artifacts)
+                metrics=save_metrics_image(y_test, new_preds, self.config.best_model_artifacts)
                 register_model(self.config.model_registry_path, 
                                 model_name=self.config.model_name,
                                 model_type=self.config.model_type,

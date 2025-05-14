@@ -5,6 +5,7 @@ import joblib
 from ensure import ensure_annotations
 from box import ConfigBox
 from src.ds_project import logger
+from src.ds_project.constants import PARAMS_FILE_PATH, DEFAULT_PARAMS_FILE_PATH
 from typing import Any
 from pathlib import Path
 from box.exceptions import BoxValueError
@@ -12,7 +13,7 @@ import pickle
 
 
 @ensure_annotations
-def read_yaml(path_to_yaml: Path) -> ConfigBox:
+def read_yaml(path_to_yaml: Path, as_config:bool=True):
     """
     Reads a YAML file and returns its contents as a ConfigBox object.
     
@@ -26,7 +27,10 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
         with open(path_to_yaml) as yaml_file:
             content = yaml.safe_load(yaml_file)
             logger.info(f"YAML file {path_to_yaml} loaded successfully.")
-            return ConfigBox(content)
+            if as_config:
+                return ConfigBox(content)
+            else:
+                return content
     except BoxValueError:
         raise ValueError(f"Error in YAML file structure: {path_to_yaml}. Please check the file.")
     except Exception as e:
@@ -118,3 +122,17 @@ def load_binary_data(path: Path, is_pickle=True):
         data = joblib.load(path)
         logger.info(f"Binary file {path} loaded successfully.")
     return data
+
+
+@ensure_annotations
+def update_yaml(path_to_yaml:Path, update_yaml:dict):
+
+    with open(path_to_yaml, 'w') as file:
+        yaml.dump(update_yaml, file, default_flow_style=False)
+
+
+def reset_parameters(actual_path:Path, old_path:Path):
+    default_yaml=read_yaml(old_path, as_config=False)
+
+    with open(actual_path, 'w') as file:
+        yaml.dump(default_yaml, file)

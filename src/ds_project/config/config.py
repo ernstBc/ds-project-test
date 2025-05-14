@@ -10,7 +10,7 @@ from src.ds_project.entity.entity_config import (DataIngestionConfig,
 from src.ds_project.constants import (CONFIG_FILE_PATH, 
                                       PARAMS_FILE_PATH, 
                                       SCHEMA_FILE_PATH,
-                                      DEFAULT_MODEL)
+                                      )
 from datetime import datetime
 
 class ConfigurationManager:
@@ -92,12 +92,11 @@ class DataTransformationManager:
 class ModelTrainingManager:
     def __init__(self, 
                  config_path: str=CONFIG_FILE_PATH, 
-                 params_file_path: str = PARAMS_FILE_PATH,
-                 model_type: str = DEFAULT_MODEL):
+                 params_file_path: str = PARAMS_FILE_PATH):
 
         self.config = read_yaml(config_path)
         self.params = read_yaml(params_file_path)
-        self.model_type = model_type
+        self.model_type = self.params.training.DEFAULT_MODEL
 
     def get_model_training_config(self) -> ModelTrainingConfig:
 

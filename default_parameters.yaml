@@ -1,21 +1,19 @@
-prueba: false
 training:
   DEFAULT_MODEL: LOGISTIC_REGRESSION
   MODELS:
     GRADIENT_BOOSTING:
-      learning_rate: '0.15'
+      learning_rate: 0.1
       loss: log_loss
-      max_depth: '8'
-      n_estimators: '50'
-      random_state: '86'
+      max_depth: 3
+      n_estimators: 100
+      random_state: 86
     LOGISTIC_REGRESSION:
-      C: '1.0'
+      C: '0.8'
       max_iter: '1000'
-      penalty: l1
+      penalty: l2
       random_state: '86'
-      solver: saga
     RANDOM_FOREST:
-      max_depth: 8
+      max_depth: 20
       n_estimators: 250
       random_state: 86
   TARGET_COLUMN: Survived

@@ -37,3 +37,10 @@ model_validator:
   best_model_path: artifact/model_validator/best_model
   best_model_artifacts_path: artifact/model_validator/best_model/artifacts
   model_registry: artifact/model_validator/registry.txt
+
+serving:
+  serving_model: artifact/model_validator/best_model/model.pkl
+
+explainer:
+  directory: artifact/explainer
+  explainer_path: artifact/explainer/explainer.pkl

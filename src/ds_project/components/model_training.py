@@ -97,12 +97,23 @@ class ModelsConfig:
             model_type = self.config.model_type
             params = self.config.params.training.MODELS
 
+
+
             if model_type == 'Logistic_Regression' or model_type == 'Logistic_Regression'.upper():
-                model = {'Logistic_Regression': LogisticRegression(**params['LOGISTIC_REGRESSION'])}
+                params_model = params['LOGISTIC_REGRESSION']
+                params_model = change_dict_dtypes(params_model)
+                model = {'Logistic_Regression': LogisticRegression(**params_model)}
+
             elif model_type == 'Random_Forest' or model_type == 'Random_Forest'.upper():
-                model = {'Random_Forest': RandomForestClassifier(**params['RANDOM_FOREST'])}
+                params_model = params['RANDOM_FOREST']
+                params_model = change_dict_dtypes(params_model)
+                model = {'Random_Forest': RandomForestClassifier(**params_model)}
+
             elif model_type == 'Gradient_Boosting' or model_type == 'Gradient_Boosting'.upper():
-                model = {'Gradient_Boosting': GradientBoostingClassifier(**params['GRADIENT_BOOSTING'])}
+                params_model = params['GRADIENT_BOOSTING']
+                params_model = change_dict_dtypes(params_model)
+                model = {'Gradient_Boosting': GradientBoostingClassifier(**params_model)}
+                
             else:
                 raise ValueError(f"Model type '{model_type}' is not supported. "
                                 "Please choose from 'Logistic_Regression', 'Random_Forest', or 'Gradient_Boosting'.")
@@ -112,3 +123,17 @@ class ModelsConfig:
         
         return model
         
+def change_dict_dtypes(dict):
+    new_dict={}
+    for k,v in dict.items():
+        if isinstance(v, str):
+            if v.isnumeric():
+                v = int(v)
+            else:
+                try:
+                    v=float(v)
+                except:
+                    pass
+        new_dict[k]=v
+
+    return new_dict

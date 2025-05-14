@@ -10,3 +10,5 @@ tqdm
 ensure
 joblib
 types-pyYAML
+streamlit
+shap
