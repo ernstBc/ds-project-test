@@ -1,0 +1,5 @@
+training:
+  default_model: RANDOM_FOREST
+
+validator:
+  VALIDATOR_THRESHOLD: 0.001

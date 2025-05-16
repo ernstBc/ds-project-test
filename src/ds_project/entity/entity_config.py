@@ -52,3 +52,9 @@ class ModelValidatorConfig:
     best_model_artifacts: Path
     model_registry_path: Path
     params: dict
+
+
+@dataclass
+class ExplainerConfig:
+    explainer_path: Path
+    model_type: str

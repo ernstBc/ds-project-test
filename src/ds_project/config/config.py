@@ -2,16 +2,18 @@ import os
 from src.ds_project.utils.utils import read_yaml, create_directories
 from src.ds_project import logger
 from pathlib import Path
+from datetime import datetime
 from src.ds_project.entity.entity_config import (DataIngestionConfig, 
                                                  DataValidationConfig, 
                                                  DataTransformationConfig,
                                                  ModelTrainingConfig,
-                                                 ModelValidatorConfig)
+                                                 ModelValidatorConfig,
+                                                 ExplainerConfig)
 from src.ds_project.constants import (CONFIG_FILE_PATH, 
                                       PARAMS_FILE_PATH, 
                                       SCHEMA_FILE_PATH,
-                                      )
-from datetime import datetime
+                                      CONFIG_TRAINING_FILE_PATH)
+
 
 class ConfigurationManager:
     def __init__(self, 
@@ -141,3 +143,23 @@ class ModelValidatorManager:
 
         return config
     
+
+class ExplainerManager:
+    def __init__(self,
+                 config_path = CONFIG_FILE_PATH,
+                 config_training_path=CONFIG_TRAINING_FILE_PATH
+                 ):
+        self.config=read_yaml(config_path)
+        self.config_training=read_yaml(config_training_path)
+
+        create_directories([self.config.explainer.directory])
+
+
+    def get_explainer_config(self):
+        config = ExplainerConfig(
+            explainer_path=Path(self.config.explainer['explainer_path']),
+            model_type=self.config_training.training['default_model'],
+            best_model_path=Path(self.config.serving['serving_model'])
+        )
+
+        return config
