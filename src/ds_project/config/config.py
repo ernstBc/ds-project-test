@@ -11,8 +11,7 @@ from src.ds_project.entity.entity_config import (DataIngestionConfig,
                                                  ExplainerConfig)
 from src.ds_project.constants import (CONFIG_FILE_PATH, 
                                       PARAMS_FILE_PATH, 
-                                      SCHEMA_FILE_PATH,
-                                      CONFIG_TRAINING_FILE_PATH)
+                                      SCHEMA_FILE_PATH,)
 
 
 class ConfigurationManager:
@@ -147,10 +146,11 @@ class ModelValidatorManager:
 class ExplainerManager:
     def __init__(self,
                  config_path = CONFIG_FILE_PATH,
-                 config_training_path=CONFIG_TRAINING_FILE_PATH
+                 params_path=PARAMS_FILE_PATH
                  ):
         self.config=read_yaml(config_path)
-        self.config_training=read_yaml(config_training_path)
+        self.params = read_yaml(params_path)
+
 
         create_directories([self.config.explainer.directory])
 
@@ -158,7 +158,7 @@ class ExplainerManager:
     def get_explainer_config(self):
         config = ExplainerConfig(
             explainer_path=Path(self.config.explainer['explainer_path']),
-            model_type=self.config_training.training['default_model'],
+            model_type=self.params.training['DEFAULT_MODEL'],
             best_model_path=Path(self.config.serving['serving_model'])
         )
 

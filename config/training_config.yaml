@@ -1,5 +1,5 @@
 training:
-  default_model: RANDOM_FOREST
+  default_model: LOGISTIC_REGRESSION
 
 validator:
   VALIDATOR_THRESHOLD: 0.001

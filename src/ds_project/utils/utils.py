@@ -53,7 +53,7 @@ def create_directories(path_to_directories: list, verbose: bool = True) -> None:
         
 
 @ensure_annotations
-def save_json(path: Path, data: dict):
+def save_json(path: Path, data: dict, append_ok:bool=False):
     """
     Saves a dictionary as a JSON file.
     
@@ -61,10 +61,17 @@ def save_json(path: Path, data: dict):
         path (Path): Path to save the JSON file.
         data (dict): Dictionary to save as JSON.
     """
-    with open(path, 'w') as json_file:
-        json.dump(data, json_file, indent=4)
-        logger.info(f"JSON file {path} saved successfully.")
 
+    if not append_ok:
+        with open(path, 'w') as json_file:
+            json.dump(data, json_file, indent=4)
+            logger.info(f"JSON file {path} saved successfully.")
+    else:
+        with open(path, 'r+') as file:
+            json_file = json.load(file)
+            json_file.update(data)
+            json.dump(json_file, file, indent=4)
+            logger.info(f"JSON file {path} saved successfully.")
 
 @ensure_annotations
 def load_json(path: Path) -> dict:

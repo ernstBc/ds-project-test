@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from src.ds_project import logger
 from src.ds_project.constants import VALIDATOR_THRESHOLD
-from src.ds_project.config.config import ModelValidatorConfig
+from src.ds_project.config.config import ModelValidatorConfig, ExplainerManager
+from src.ds_project.components.model_explainer import Explainer
 from pathlib import Path
 from sklearn.metrics import (f1_score, 
                              accuracy_score,
@@ -43,6 +44,11 @@ class ModelValidator:
 
             # calculate predictions and get metrics
             preds = model.predict(x_test)
+            
+            # create explainer
+            explainer_config=ExplainerManager().get_explainer_config()
+            explainer=Explainer(explainer_config)
+            explainer.create_and_save_explainer(x=x_test)
 
             # log metrics and registry the model
             metrics=save_metrics_image(y_test, preds, self.config.best_model_artifacts)
@@ -63,8 +69,6 @@ class ModelValidator:
             # calculate metrics
             f1_old = f1_score(y_test, old_preds)
             f1_new = f1_score(y_test, new_preds)
-            print('-----------------current f1--------------' +str(f1_new))
-            print('-----------------last f1--------------' +str(f1_new))
 
             if (f1_new) > (f1_old + self.threshold):
 
@@ -80,6 +84,12 @@ class ModelValidator:
                                 model_type=self.config.model_type,
                                 metrics=metrics,
                                 params=self.config.params.training.MODELS[self.config.model_type])
+                
+                # create and save explainer # create explainer
+                explainer_config=ExplainerManager().get_explainer_config()
+                explainer=Explainer(explainer_config)
+                explainer.create_and_save_explainer(x=x_test)
+
             else:
                 logger.info("Model doesn't beat the current best model")
             
@@ -129,16 +139,27 @@ def register_model(model_registory_path:str,
                    params:dict):
     
     format_text = f"""
-    {'--'*150}
+    {'--'*(150-9)}
     Model: {model_name}
         Type: {model_type}
             Metrics:
                 {metrics}
             Params: 
                 {params}
-    {'--'*150}
+    {'--'*(150-9)}
 
 """
+    json_format={
+        model_name: {
+            'name':model_name,
+            'type':model_type,
+            'metrics': metrics,
+            'params':params
+        }
+    }
+
+    json_path=Path(model_registory_path.replace('.txt', '.json'))
+    save_json(json_path, json_format)
     
     with open(model_registory_path, 'a') as file:
         file.write(format_text)

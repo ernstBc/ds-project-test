@@ -17,6 +17,7 @@ training:
       n_estimators: 250
       random_state: 86
   TARGET_COLUMN: Survived
+  default_model: GRADIENT_BOOSTING
 transform_data:
   DROPPED_COLUMNS:
   - PassengerId

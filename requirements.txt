@@ -12,3 +12,4 @@ joblib
 types-pyYAML
 streamlit
 shap
+streamlit_js_eval

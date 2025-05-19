@@ -1,0 +1,5 @@
+logs/app.log
+notebooks/
+mlruns/
+venv/
+artifact/

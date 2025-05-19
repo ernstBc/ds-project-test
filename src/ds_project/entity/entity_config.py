@@ -58,3 +58,4 @@ class ModelValidatorConfig:
 class ExplainerConfig:
     explainer_path: Path
     model_type: str
+    best_model_path: Path
